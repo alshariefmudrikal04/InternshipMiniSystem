@@ -1,0 +1,25 @@
+# Python
+*.pyc
+__pycache__/
+
+# Django
+db.sqlite3
+
+# Excel / local data (CRITICAL)
+internfilter/data/
+*.xlsx
+*.xls
+*.csv
+
+# Environment
+.env
+
+# Virtual environment
+venv/
+.venv/
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
