@@ -1,45 +1,370 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Internship Record Automation System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --navy: #0d2137;
+            --blue: #1a3c5e;
+            --accent: #3a8fd1;
+            --light-accent: #d6ecfa;
+            --bg: #f0f4f8;
+            --white: #ffffff;
+            --text: #1e2d3d;
+            --muted: #6b7f92;
+            --border: #c8d8e8;
+            --success: #2ecc71;
+            --row-alt: #eef4fb;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+            padding: 28px 40px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 20px rgba(13,33,55,0.25);
+        }
+        .header-icon {
+            width: 44px; height: 44px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+        }
+        header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.02em;
+        }
+        header p {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.55);
+            margin-top: 2px;
+        }
+
+        /* ── MAIN LAYOUT ── */
+        main {
+            max-width: 1300px;
+            margin: 36px auto;
+            padding: 0 24px 60px;
+        }
+
+        /* ── SEARCH CARD ── */
+        .search-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 32px 36px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            margin-bottom: 32px;
+        }
+        .search-card h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .search-card h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px; height: 18px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 260px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .field-group { display: flex; flex-direction: column; gap: 6px; }
+        label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 110px;
+            resize: vertical;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            background: #fafcff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            line-height: 1.55;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(58,143,209,0.15);
+        }
+        textarea::placeholder { color: #a8bbd0; }
+
+        select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            background: #fafcff;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7f92' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(58,143,209,0.15);
+        }
+
+        .hint {
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            border: none;
+            border-radius: 9px;
+            padding: 11px 24px;
+            font-size: 0.88rem;
+            transition: all 0.18s;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 3px 10px rgba(58,143,209,0.3);
+        }
+        .btn-primary:hover { background: #2b7ec4; transform: translateY(-1px); box-shadow: 0 5px 14px rgba(58,143,209,0.35); }
+        .btn-pdf {
+            background: var(--navy);
+            color: white;
+            box-shadow: 0 3px 10px rgba(13,33,55,0.2);
+        }
+        .btn-pdf:hover { background: #162e4a; transform: translateY(-1px); }
+
+        /* ── RESULTS ── */
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .results-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--navy);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .results-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px; height: 16px;
+            background: var(--success);
+            border-radius: 2px;
+        }
+        .badge {
+            background: var(--light-accent);
+            color: var(--blue);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.04em;
+        }
+
+        .table-wrap {
+            background: var(--white);
+            border-radius: 14px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+            overflow: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84rem;
+        }
+        thead {
+            background: linear-gradient(135deg, var(--navy), var(--blue));
+            position: sticky;
+            top: 0;
+        }
+        thead th {
+            padding: 13px 16px;
+            text-align: left;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: rgba(255,255,255,0.85);
+            white-space: nowrap;
+        }
+        tbody tr:nth-child(even) { background: var(--row-alt); }
+        tbody tr:hover { background: #daeeff; transition: background 0.12s; }
+        tbody td {
+            padding: 10px 16px;
+            color: var(--text);
+            border-bottom: 1px solid #e8eef5;
+            white-space: nowrap;
+        }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            text-align: center;
+            padding: 60px 24px;
+            background: var(--white);
+            border-radius: 14px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+        }
+        .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+        .empty-state p { color: var(--muted); font-size: 0.9rem; }
+        .empty-state strong { color: var(--navy); }
+
+        @media (max-width: 700px) {
+            .form-grid { grid-template-columns: 1fr; }
+            header { padding: 20px; }
+            main { padding: 0 14px 40px; }
+            .search-card { padding: 22px 18px; }
+        }
+    </style>
 </head>
 <body>
 
-<h2>Search Name</h2>
+<header>
+    <div class="header-icon">📋</div>
+    <div>
+        <h1>Internship Record Automation System</h1>
+        <p>TAS-CASD · Search &amp; Export Records</p>
+    </div>
+</header>
 
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="name" placeholder="Enter Name">
+<main>
+    <div class="search-card">
+        <h2>Search Records</h2>
 
-    <select name="column">
-        <option value="">-- Select Column --</option>
-        {% for col in columns %}
-            <option value="{{ col }}">{{ col }}</option>
-        {% endfor %}
-    </select>
+        <form method="POST" id="mainForm">
+            {% csrf_token %}
 
-    <button type="submit">Search</button>
-</form>
+            <div class="form-grid">
+                <div class="field-group">
+                    <label for="names">Names to search</label>
+                    <textarea
+                        id="names"
+                        name="names"
+                        placeholder="Enter one or multiple names&#10;e.g.&#10;Juan dela Cruz&#10;Maria Santos, Jose Rizal"
+                    >{{ names_input }}</textarea>
+                    <span class="hint">Separate multiple names with commas or new lines. Partial names work — typing <strong>joe</strong> will match <strong>John Joe Doe</strong>.</span>
+                </div>
 
-<hr>
+                <div class="field-group">
+                    <label for="column">Filter Column (optional)</label>
+                    <select id="column" name="column">
+                        <option value="">— Show All Columns —</option>
+                        {% for col in columns %}
+                            <option value="{{ col }}" {% if col == selected_column %}selected{% endif %}>{{ col }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="hint">Select a column to narrow down the displayed fields.</span>
+                </div>
+            </div>
 
-{% if data %}
-<table border="1">
-    <tr>
-        {% for key in data.0.keys %}
-            <th>{{ key }}</th>
-        {% endfor %}
-    </tr>
+            <div class="btn-row">
+                <button type="submit" class="btn-primary">
+                    🔍 Search
+                </button>
+                {% if data %}
+                <button type="submit" name="export" value="pdf" class="btn-pdf">
+                    📄 Export to PDF
+                </button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
 
-    {% for row in data %}
-    <tr>
-        {% for value in row.values %}
-            <td>{{ value }}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
-{% endif %}
+    {% if data is not None %}
+        {% if data %}
+            <div class="results-header">
+                <span class="results-title">Results</span>
+                <span class="badge">{{ data|length }} record{{ data|length|pluralize }}</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            {% for key in data.0.keys %}
+                                <th>{{ key }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                        <tr>
+                            {% for value in row.values %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="icon">🔎</div>
+                <p><strong>No records found.</strong><br>Try a different name or check for typos.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+</main>
 
 </body>
 </html>
